@@ -31,7 +31,7 @@ public class CustomTransformer implements Processor<Observation, Observation>{
 
 	@Override
 	public void onError(Throwable throwable) {
-		
+		subscribers.stream().forEach(x -> x.onError(throwable));
 	}
 
 	@Override
