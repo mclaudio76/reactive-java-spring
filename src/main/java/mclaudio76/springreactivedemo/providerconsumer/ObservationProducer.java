@@ -4,7 +4,9 @@ package mclaudio76.springreactivedemo.providerconsumer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.SubmissionPublisher;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ObservationProducer {
 	
 	private List<ObservationConsumer> consumers  = new ArrayList<>();

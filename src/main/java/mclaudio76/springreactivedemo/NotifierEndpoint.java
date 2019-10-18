@@ -2,8 +2,7 @@ package mclaudio76.springreactivedemo;
 
 import java.util.Random;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,17 +11,14 @@ import mclaudio76.springreactivedemo.providerconsumer.ObservationConsumer;
 import mclaudio76.springreactivedemo.providerconsumer.ObservationProducer;
 
 @RestController
-public class NotifierService {
+public class NotifierEndpoint {
 	
+	@Autowired
 	private ObservationProducer producer;
 	
-	
-	@PostConstruct
-	public void initialize() {
-		producer = new ObservationProducer();
+	@Autowired
+	private void setConsumer1() {
 		producer.addConsumer(new ObservationConsumer("Consumer 1",1, 5));
-		producer.addConsumer(new ObservationConsumer("Consumer 2",2, 10));
-		producer.addConsumer(new ObservationConsumer("Consumer 3",3, 20));
 	}
 	
 	
