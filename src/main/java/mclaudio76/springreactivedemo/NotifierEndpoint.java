@@ -13,12 +13,13 @@ import mclaudio76.springreactivedemo.providerconsumer.ObservationProducer;
 @RestController
 public class NotifierEndpoint {
 	
-	@Autowired
 	private ObservationProducer producer;
 	
 	@Autowired
-	private void setConsumer1() {
+	public NotifierEndpoint() {
+		producer = new ObservationProducer();
 		producer.addConsumer(new ObservationConsumer("Consumer 1",1, 5));
+		producer.addConsumer(new ObservationConsumer("Consumer 2",1, 10));
 	}
 	
 	
