@@ -1,5 +1,7 @@
 package mclaudio76.springreactivedemo;
 
+import java.util.Random;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,14 +20,18 @@ public class NotifierService {
 	@PostConstruct
 	public void initialize() {
 		producer = new ObservationProducer();
-		producer.addConsumer(new ObservationConsumer(10));
-		producer.addConsumer(new ObservationConsumer(1));
+		producer.addConsumer(new ObservationConsumer("Consumer 1",1, 5));
+		producer.addConsumer(new ObservationConsumer("Consumer 2",2, 10));
+		producer.addConsumer(new ObservationConsumer("Consumer 3",3, 20));
 	}
 	
 	
 	@PostMapping(path = "/publish") 
 	public void doPublish() {
-		producer.registerObservation(Observation.createObservation(20));
+		for(int x = 0; x < 10; x++) {
+			producer.registerObservation(Observation.createObservation(new Random().nextInt()));
+		}
+		producer.notifyObservers();
 	}
 	
 	

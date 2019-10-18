@@ -6,9 +6,14 @@ import java.util.concurrent.Flow.Subscription;
 public class ObservationConsumer implements Subscriber<Observation>{
 	Subscription subscription = null;
 	private int maxItems 	  = 0;
+	private String observerID = "";
+	private int msecSleepTime = 0;
+	private int received	  = 0;
 	
-	public ObservationConsumer(int maxItems) {
-		this.maxItems = maxItems;
+	public ObservationConsumer(String observerID, int maxItems, int msecSleepTime) {
+		this.maxItems    = maxItems;
+		this.observerID = observerID;
+		this.msecSleepTime = msecSleepTime;
 	}
 	
 	@Override
@@ -19,19 +24,31 @@ public class ObservationConsumer implements Subscriber<Observation>{
 
 	@Override
 	public void onNext(Observation item) {
-		System.out.println("Got"+item);
+		log(item.toString());
+		try {
+			Thread.sleep(msecSleepTime);
+		}
+		catch(Exception e) {
+			
+		}
+		received++;
 		subscription.request(maxItems);
 	}
 
 	@Override
 	public void onError(Throwable throwable) {
-		System.err.println(" An error is been raised ");
+		log("An error occurred");
 		
 	}
 
 	@Override
 	public void onComplete() {
-		System.out.println(" The producer has finished ");
+		log("All data sent by publisher , received "+received);
+	}
+	
+	
+	private void log(String mex) {
+		System.out.println("["+observerID+"] >> "+mex);
 	}
 
 }

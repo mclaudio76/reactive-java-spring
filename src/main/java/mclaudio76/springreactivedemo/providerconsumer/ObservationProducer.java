@@ -6,19 +6,23 @@ import java.util.List;
 import java.util.concurrent.SubmissionPublisher;
 
 public class ObservationProducer {
-	 
-	private SubmissionPublisher<Observation>  actualPublisher = new SubmissionPublisher<Observation>();
+	
 	private List<ObservationConsumer> consumers  = new ArrayList<>();
+	private List<Observation> data	= new ArrayList<>();
 	
 	public void addConsumer(ObservationConsumer consumer) {
 		consumers.add(consumer);
-		actualPublisher.subscribe(consumer);
 	}
 	
 	public void registerObservation(Observation obs) {
-		for(ObservationConsumer consumer : consumers) {
-			consumer.onNext(obs);
-		}
+		data.add(obs);
+	}
+	
+	public void notifyObservers() {
+		SubmissionPublisher<Observation>  actualPublisher = new SubmissionPublisher<>();
+		consumers.stream().forEach(actualPublisher::subscribe);
+		data.stream().forEach(actualPublisher::submit);
+		actualPublisher.close();
 	}
 
 }

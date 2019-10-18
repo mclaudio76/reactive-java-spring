@@ -13,13 +13,13 @@ public class Observation {
 	
 	public static Observation createObservation(int numericValue) {
 		Observation obs = new Observation();
-		obs.observationID = OBSERVATION_COUNTER++;
+		obs.observationID = ++OBSERVATION_COUNTER;
 		obs.numericValue  = numericValue;
 		return obs;
 	}
 	
 	public String toString() {
-		return "Obs#"+observationID+" = ["+numericValue+"]";
+		return "Obs# "+observationID+" = ["+numericValue+"]";
 	}
 	
 	
