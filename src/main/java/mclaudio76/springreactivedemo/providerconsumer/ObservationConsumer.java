@@ -24,15 +24,23 @@ public class ObservationConsumer implements Subscriber<Observation>{
 
 	@Override
 	public void onNext(Observation item) {
-		log(item.toString());
-		try {
-			Thread.sleep(msecSleepTime);
-		}
-		catch(Exception e) {
+		
+		if(item.getNumericValue() < 0) {
+			log("No more interested... negative number !! ("+item.toString()+")");
+			subscription.cancel();
 			
 		}
-		received++;
-		subscription.request(maxItems);
+		else {
+			log(item.toString());
+			try {
+				Thread.sleep(msecSleepTime);
+			}
+			catch(Exception e) {
+				
+			}
+			received++;
+			subscription.request(maxItems);
+		}
 	}
 
 	@Override

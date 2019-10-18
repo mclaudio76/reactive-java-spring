@@ -20,6 +20,7 @@ public class NotifierEndpoint {
 		producer = new ObservationProducer();
 		producer.addConsumer(new ObservationConsumer("Consumer 1",1, 5));
 		producer.addConsumer(new ObservationConsumer("Consumer 2",1, 10));
+		producer.addConsumer(new ObservationConsumer("Consumer 3",1, 15));
 	}
 	
 	
