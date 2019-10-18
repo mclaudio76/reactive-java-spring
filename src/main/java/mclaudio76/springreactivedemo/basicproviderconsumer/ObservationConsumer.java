@@ -1,4 +1,4 @@
-package mclaudio76.springreactivedemo.providerconsumer;
+package mclaudio76.springreactivedemo.basicproviderconsumer;
 
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
@@ -24,9 +24,9 @@ public class ObservationConsumer implements Subscriber<Observation>{
 
 	@Override
 	public void onNext(Observation item) {
-		
 		if(item.getNumericValue() < 0) {
 			log("No more interested... negative number !! ("+item.toString()+")");
+			received = 0;
 			subscription.cancel();
 			
 		}
@@ -51,6 +51,7 @@ public class ObservationConsumer implements Subscriber<Observation>{
 
 	@Override
 	public void onComplete() {
+		received = 0;
 		log("All data sent by publisher , received "+received);
 	}
 	
