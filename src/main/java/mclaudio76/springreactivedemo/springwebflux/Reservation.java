@@ -8,6 +8,10 @@ public class Reservation {
 		this.reservationID = reservationID;
 	}
 	
+	public Reservation update() {
+		return this;
+	}
+	
 	@Override
 	public String toString() {
 		return this.reservationID;

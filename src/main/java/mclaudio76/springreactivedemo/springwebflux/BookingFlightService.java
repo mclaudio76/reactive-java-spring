@@ -1,16 +1,14 @@
 package mclaudio76.springreactivedemo.springwebflux;
 
-import static reactor.core.scheduler.Schedulers.elastic;
-
+import static reactor.core.scheduler.Schedulers.*;
 import java.time.Instant;
-
 import org.springframework.stereotype.Service;
-
 import reactor.core.publisher.Flux;
+import static reactor.core.publisher.Flux.*;
+
 
 @Service
 public class BookingFlightService {
-
 	
 	public Reservation bookFlight(int passengerID, int flightID) {
 		Passenger p = findPassenger(passengerID);
@@ -18,12 +16,15 @@ public class BookingFlightService {
 		return book(p,f); 
 	}
 	
-	public Reservation rBookFlight(int passengerID, int flightID) {
-		Flux<Passenger> rPassenger = Flux.defer(() -> Flux.just(findPassenger(passengerID))).subscribeOn(elastic());
-		Flux<Flight>    rFlight    = Flux.defer(() -> Flux.just(findFlight((flightID)))).subscribeOn(elastic());
-		return 			rPassenger.zipWith(rFlight, (p, f) -> book(p,f)).blockFirst();
-	}
 	
+	public Reservation rBookFlight(int passengerID, int flightID) {
+		Flux<Passenger> rPassenger = defer( ()-> just(findPassenger(passengerID))).subscribeOn(elastic());
+		Flux<Flight>    rFlight    = defer( ()-> just(findFlight((flightID)))).subscribeOn(elastic());
+		Flux<Reservation> rReservation = rPassenger.zipWith(rFlight, (p, f) -> book(p,f));
+		rReservation.map(x -> x.update());
+		return 			rReservation.blockFirst();
+		
+	}
 	
 	private Reservation book(Passenger p, Flight f) {
 		sleep(2);

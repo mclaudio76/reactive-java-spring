@@ -19,7 +19,8 @@ public class WebFluxEndpoint {
 	@Autowired
 	BookingFlightService fService;
 	
-	private String[] fruits = {"Apple", "Orange", "Grape", "Banana", "Strawberry"};
+	private String[] fruits  = {"Apples", "Oranges", "Grapes"};
+	private Integer[]    howMany = {5,3,2};
 	
 	@GetMapping(path = "/flux")
 	public void usingFlux() {
@@ -35,6 +36,26 @@ public class WebFluxEndpoint {
          Flux<Tuple2<String, String>> zipped = characterFlux.zipWith(foodFlux);
          zipped.subscribe(out::println);
 	}
+	
+	@GetMapping(path = "/flux2")
+	public void usingFlux2() {
+		 out.println();
+		 Flux<String> characterFlux = Flux
+			      .just("Donald Duck", "Mickey Mouse", "Goofy")
+			      .delayElements(Duration.ofMillis(10));
+		 Flux<String> foodFlux = Flux
+		      .fromArray(fruits)
+		      .delaySubscription(Duration.ofMillis(250))
+		      .delayElements(Duration.ofMillis(500));
+		 
+         characterFlux.zipWith(
+        		 (Flux.fromArray(howMany).zipWith(foodFlux, (times, fruit) -> " eats "+times+" "+fruit)),
+        		 (character, fruit_times) -> character+" "+fruit_times).subscribe(out::println);
+         
+	}
+	
+	
+	
 	
 	@GetMapping(path="/booking")
 	public Reservation booking() {
