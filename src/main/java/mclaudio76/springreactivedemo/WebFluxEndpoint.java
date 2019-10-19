@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import mclaudio76.springreactivedemo.springwebflux.BookingFlightService;
+import mclaudio76.springreactivedemo.springwebflux.Reservation;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import static java.lang.System.*;
@@ -36,10 +37,14 @@ public class WebFluxEndpoint {
 	}
 	
 	@GetMapping(path="/booking")
-	public void booking() {
-		fService.bookFlight(10, 20);
+	public Reservation booking() {
+		return fService.bookFlight(10, 20);
 	}
 	
+	@GetMapping(path="/rbooking")
+	public Reservation rBooking() {
+		return fService.rBookFlight(10, 20);
+	}
 	
 	
 	@GetMapping(path = "/fluxget", produces = MediaType.APPLICATION_JSON_VALUE)
