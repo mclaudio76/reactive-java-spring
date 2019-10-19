@@ -19,4 +19,8 @@ public class Passenger {
 		this.name = name;
 	}
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }
